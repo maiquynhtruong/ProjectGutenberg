@@ -1,4 +1,4 @@
-import re, string, sys
+import re, string, sys, random
 from itertools import islice
 from collections import Counter
 from trie import Trie
@@ -89,7 +89,17 @@ def getChapterQuoteAppears(quote, headings, chapters):
     return -1
 
 def generateSentence(word_list):
-    pass
+    get_indexes = lambda word, word_list: [i for (item, i) in zip(word_list, range(len(word_list))) if word == item]
+    sentence = 'the'
+    index = random.choice(get_indexes(sentence, word_list))
+
+    for i in range(10):
+        index = index + 1
+        next = word_list[index]
+        sentence = sentence + ' ' + word_list[index]
+        index = random.choice(get_indexes(next, word_list))
+
+    return sentence
 
 def getAutocompleteSentence(uniques, start):
     trie = Trie()
@@ -107,6 +117,7 @@ headings, chapters = getChapters(text)
 frequency = getFrequencyOfWord('Bastille', chapters)
 chapterQuote = getChapterQuoteAppears('it was the spring of hope', headings, chapters);
 sentences = getAutocompleteSentence(uniques, 'France')
+sentence = generateSentence(word_list)
 
 # print '\nList of words: \n', word_list
 # print '\nTotal number of words: \n', num
@@ -122,4 +133,5 @@ sentences = getAutocompleteSentence(uniques, 'France')
 # for (word, cnt) in interesting20: print word, cnt
 # print '\nFrequencies of words in chapters: \n', frequency
 # print '\nQuote belongs to chapter', chapterQuote
-print '\nAutocomplete Sentences:', sentences
+# print '\nAutocomplete Sentences:', sentences
+print '\nGenerate sentence:', sentence
