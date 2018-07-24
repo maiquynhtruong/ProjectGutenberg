@@ -1,6 +1,7 @@
 import re, string, sys
 from itertools import islice
 from collections import Counter
+from trie import Trie
 file = open('a-tale-of-two-cities.txt', 'r')
 text = file.read()
 
@@ -90,22 +91,26 @@ def getChapterQuoteAppears(quote, headings, chapters):
 def generateSentence(word_list):
     pass
 
-def getAutocompleteSentence(start):
-    pass
+def getAutocompleteSentence(uniques, start):
+    trie = Trie()
+    for word in uniques:
+        trie.insert(word)
+    return trie.autocomplete(start)
 
 word_list = getListOfWords(text)
 num = getTotalNumberOfWords(word_list)
-total = getTotalUniqueWords(word_list)
+uniques = getTotalUniqueWords(word_list)
 mostCommon20 = get20MostFrequentWords(word_list)
 interesting20 = get20MostInterestingFrequentWords(word_list)
 leastCommon20 = get20LeastFrequentWords(word_list)
 headings, chapters = getChapters(text)
 frequency = getFrequencyOfWord('Bastille', chapters)
 chapterQuote = getChapterQuoteAppears('it was the spring of hope', headings, chapters);
+sentences = getAutocompleteSentence(uniques, 'France')
 
 # print '\nList of words: \n', word_list
 # print '\nTotal number of words: \n', num
-# print '\nTotal unique words: \n', len(total)
+# print '\nTotal unique words: \n', len(uniques)
 # print '\n20 Most common words: \n'
 # print mostCommon20
 # for i, (word, cnt) in enumerate(mostCommon20):
@@ -117,3 +122,4 @@ chapterQuote = getChapterQuoteAppears('it was the spring of hope', headings, cha
 # for (word, cnt) in interesting20: print word, cnt
 # print '\nFrequencies of words in chapters: \n', frequency
 # print '\nQuote belongs to chapter', chapterQuote
+print '\nAutocomplete Sentences:', sentences
